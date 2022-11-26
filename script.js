@@ -56,12 +56,9 @@ function game()
     let ties = 0;
     for (let i = 1; i <= 5; i++)
     {
-        let player = prompt("Enter 'Rock', 'Paper' or 'Scissors'.");
-        player =  player[0].toUpperCase() + player.substr(1).toLowerCase();
-
-        let computer = getComputerChoice();
-        computer = computer[0].toUpperCase() + computer.substr(1).toLowerCase();
-
+        let capitalize = (s) => s[0].toUpperCase() + s.substr(1).toLowerCase();
+        let player = capitalize(prompt("Enter 'Rock', 'Paper' or 'Scissors'."));
+        let computer = capitalize(getComputerChoice());
         let result = playRound(player,  computer);
         let outputResult;
         if (result === 0)
@@ -79,10 +76,9 @@ function game()
             outputResult = "You lose!";
             computerWins++;
         }
-        console.log(`Round ${i}: You chose "${player}" and the computer chose "${computer}". ${outputResult}`);
+        console.log(`Round ${i}: ${outputResult} You chose "${player}" and the computer chose "${computer}". `);
     }
-    let result;
-    result =    (playerWins > computerWins) ? "You are the final winner. Congratulations!" :
+    let result =(playerWins > computerWins) ? "You are the final winner. Congratulations!" :
                 (playerWins < computerWins) ? "The computer is the final winner. Better luck next time!" :
                 "It's a tie!";
     console.log(`You won ${playerWins} times, the computer won ${computerWins} times and there were ${ties} ties! ${result}`);
