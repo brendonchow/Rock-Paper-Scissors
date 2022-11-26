@@ -27,24 +27,13 @@ function playRound(player, computer)
     }
     if (player === "Rock")
     {
-        return isWinner(computer, "Scissors");
+        return (computer === "Scissors") ? 1 : -1;
     }
     if (player === "Paper")
     {
-        return isWinner(computer, "Rock");
+        return (computer === "Rock") ? 1 : -1;
     }
-    if (player === "Scissors")
-    {
-        return isWinner(computer, "Paper");
-    }
-}
-
-/* Given the player's and computer's selection and the selection 
-for the player to win, return the result of the round, given that
-a tie is not possible */
-function isWinner(computer, playerWinOption)
-{
-    return  ((computer === playerWinOption) ? 1 : -1);
+    return (computer === "Paper") ? 1 : -1;
 }
 
 /* Player and computer play a round of 5
@@ -58,8 +47,9 @@ function game()
     {
         let capitalize = (s) => s[0].toUpperCase() + s.substr(1).toLowerCase();
         let player = capitalize(prompt("Enter 'Rock', 'Paper' or 'Scissors'."));
-        let computer = capitalize(getComputerChoice());
+        let computer = getComputerChoice();
         let result = playRound(player,  computer);
+
         let outputResult;
         if (result === 0)
         {
@@ -78,6 +68,7 @@ function game()
         }
         console.log(`Round ${i}: ${outputResult} You chose "${player}" and the computer chose "${computer}". `);
     }
+
     let result =(playerWins > computerWins) ? "You are the final winner. Congratulations!" :
                 (playerWins < computerWins) ? "The computer is the final winner. Better luck next time!" :
                 "It's a tie!";
