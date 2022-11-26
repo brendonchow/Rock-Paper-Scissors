@@ -58,13 +58,15 @@ function game()
     {
         let player = prompt("Enter 'Rock', 'Paper' or 'Scissors'.");
         player =  player[0].toUpperCase() + player.substr(1).toLowerCase();
+
         let computer = getComputerChoice();
         computer = computer[0].toUpperCase() + computer.substr(1).toLowerCase();
+
         let result = playRound(player,  computer);
         let outputResult;
         if (result === 0)
         {
-            outputResult = "No one wins!";
+            outputResult = "Tie game!";
             ties++;
         }
         else if (result === 1)
