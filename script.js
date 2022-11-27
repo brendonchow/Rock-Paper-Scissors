@@ -1,67 +1,69 @@
+const INITIAL_QUOTE = "Lets Play!";
+
+const trackPlayer = document.querySelector(".playerScore");
+const trackComputer = document.querySelector(".computerScore");
+const message = document.querySelector(".message");
+const buttons = document.querySelectorAll(".buttons button");
+const playButton = document.querySelector(".play"); 
+
+message.textContent = INITIAL_QUOTE;
+
+playButton.addEventListener("mousedown", () => {
+    trackComputer.textContent = 0;
+    trackPlayer.textContent = 0;
+    playButton.classList.toggle("clickPlay")
+    message.textContent = INITIAL_QUOTE;
+})
+
+buttons.forEach(button => {
+    button.addEventListener("click", e => {
+        playRound(e.target.classList.value, getComputerChoice());
+    });
+
+});
+
+message.addEventListener("transitionend", e => e.target.classList.remove("messageChange"));
+
+window.addEventListener("keydown", (e) => {
+    const player = document.querySelector(`.${e.key}`);
+    if (!player) return;
+    playRound(player.classList.value.slice(0, player.classList.value.length - 2), getComputerChoice());
+    console.log(player.classList.value);
+})
+
 function getComputerChoice()
 {
-    randomNatural = Math.floor(Math.random() * 3);
-    return  (randomNatural === 0) ? "Rock" :
-            (randomNatural === 1) ? "Paper" : "Scissors";
+    let choices = ["Rock", "Paper", "Scissors"]
+    return  choices[Math.floor(Math.random() * 3)];
 }
 
-function isWinner(player, computer)
+function playRound(player, computer)
 {
-    if (player === computer)
-    {
-        return 0;
-    }
-    if (player === "Rock")
-    {
-        return (computer === "Scissors") ? 1 : -1;
-    }
-    if (player === "Paper")
-    {
-        return (computer === "Rock") ? 1 : -1;
-    }
-    if (player == "Scissors")
-    {
-        return (computer === "Paper") ? 1 : -1;
-    }
+    if (trackPlayer.textContent == 5 || trackComputer.textContent == 5) return;
+    message.classList.add("messageChange");
+    if (player === computer) message.textContent = "Tie!";
+    else if (player === "Rock") determineResult(computer, "Scissors");
+    else if (player === "Paper") determineResult(computer, "Rock");
+    else determineResult(computer, "Paper");
 }
 
-function game()
+function determineResult(computer, playerWin)
 {
-    let playerWins = 0;
-    let computerWins = 0;
-    let ties = 0;
-    // Play 5 rounds
-    for (let i = 1; i <= 5; i++)
+    if (computer === playerWin) 
     {
-        let capitalize = (s) => s[0].toUpperCase() + s.substr(1).toLowerCase();
-        let player = capitalize(prompt("Enter 'Rock', 'Paper' or 'Scissors'."));
-        let computer = getComputerChoice();
-        let result = isWinner(player,  computer);
-
-        let outputResult;
-        if (result === 0)
-        {
-            outputResult = "Tie game!";
-            ties++;
-        }
-        else if (result === 1)
-        {
-            outputResult = "You win!";
-            playerWins++;
-        }
-        else
-        {
-            outputResult = "You lose!";
-            computerWins++;
-        }
-        console.log(`Round ${i}: ${outputResult} You chose "${player}" and the computer chose "${computer}".`);
+        trackPlayer.textContent++;
+        message.textContent = "Player + 1"
+    } 
+    else 
+    {
+        trackComputer.textContent++;
+        message.textContent = "Computer + 1"
     }
+    if (trackPlayer.textContent == 5 || trackComputer.textContent == 5)
+    {
+        if (trackPlayer.textContent == 5) message.textContent = "Player Wins!";
+        else message.textContent = "Computer Wins!";
+        playButton.classList.toggle("clickPlay");
 
-    let result =(playerWins > computerWins) ? "You are the final winner. Congratulations!" :
-                (playerWins < computerWins) ? "The computer is the final winner. Better luck next time!" :
-                "It's a tie!";
-    // Print results and stats on their own lines
-    console.log(`${result}\nWins: ${playerWins}\nLoses: ${computerWins}\nTies: ${ties}`);
+    }
 }
-
-game();
